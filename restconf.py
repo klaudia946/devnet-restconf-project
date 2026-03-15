@@ -1,40 +1,37 @@
 import requests
 import json
 
-url = "https://sandbox-iosxe-latest-1.cisco.com/restconf/data/ietf-interfaces:interfaces"
+# URL przykładowego API
+url = "https://jsonplaceholder.typicode.com/posts"
 
+# nagłówki HTTP
 headers = {
-    "Content-Type": "application/yang-data+json"
+    "Content-Type": "application/json"
 }
 
-auth = ("developer", "C1sco12345")
-
+# dane które wysyłamy
 data = {
- "ietf-interfaces:interface": [
-  {
-   "name": "Loopback100",
-   "type": "iana-if-type:softwareLoopback",
-   "enabled": True,
-   "ietf-ip:ipv4": {
-    "address": [
-     {
-      "ip": "10.100.100.1",
-      "netmask": "255.255.255.0"
-     }
-    ]
-   }
-  }
- ]
+    "title": "Network Automation",
+    "body": "Creating interface configuration using API",
+    "userId": 1
 }
 
-response = requests.post(
-    url,
-    headers=headers,
-    auth=auth,
-    data=json.dumps(data),
-    verify=False
-)
+# konwersja do JSON
+payload = json.dumps(data)
 
-print(response.status_code)
+print("Sending API request...")
+
+# wysłanie zapytania POST
+response = requests.post(url, headers=headers, data=payload)
+
+print("Status code:", response.status_code)
+
+# sprawdzamy czy request się udał
+if response.status_code == 201:
+    print("Request successful!")
+else:
+    print("Request failed")
+
+# pokazujemy odpowiedź serwera
+print("Response from server:")
 print(response.text)
-
