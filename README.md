@@ -59,3 +59,35 @@ Run the script:
 
 python3 restconf.py
 
+## Extended functionality (final version)
+
+The project was extended to include a custom REST API built with Flask, which simulates a network device.
+
+### Implemented endpoints:
+
+- GET /interfaces
+- POST /interfaces
+- PUT /interfaces/{id}
+- DELETE /interfaces/{id}
+
+- GET /routing
+- POST /routing
+
+### Features:
+
+- Full CRUD operations (Create, Read, Update, Delete)
+- Token-based authentication
+- Error handling (400, 401, 404)
+- Timeout handling in client
+- Modular Python code (functions)
+- Simulation of network device (router)
+
+### Architecture:
+
+Python Client (restconf.py)
+        ↓
+REST API (Flask - api.py)
+        ↓
+Simulated network device
+        ↓
+JSON responses
