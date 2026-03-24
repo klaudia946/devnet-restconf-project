@@ -1,37 +1,51 @@
 import requests
-import json
 
-# URL przykładowego API
-url = "https://jsonplaceholder.typicode.com/posts"
+BASE_URL = "http://127.0.0.1:5000"
+HEADERS = {"Authorization": "12345"}
 
-# nagłówki HTTP
-headers = {
-    "Content-Type": "application/json"
-}
+def create_interface():
+    data = {"name": "Loopback0", "ip": "10.0.0.1"}
+    try:
+        r = requests.post(BASE_URL + "/interfaces", json=data, headers=HEADERS, timeout=5)
+        print("POST interface:", r.status_code, r.text)
+    except requests.exceptions.RequestException as e:
+        print("Error:", e)
 
-# dane które wysyłamy
-data = {
-    "title": "Network Automation",
-    "body": "Creating interface configuration using API",
-    "userId": 1
-}
+def get_interfaces():
+    r = requests.get(BASE_URL + "/interfaces", headers=HEADERS)
+    print("GET interfaces:", r.status_code, r.text)
 
-# konwersja do JSON
-payload = json.dumps(data)
+def update_interface():
+    data = {"name": "Loopback0", "ip": "10.0.0.2"}
+    r = requests.put(BASE_URL + "/interfaces/0", json=data, headers=HEADERS)
+    print("PUT interface:", r.status_code, r.text)
 
-print("Sending API request...")
+def delete_interface():
+    r = requests.delete(BASE_URL + "/interfaces/0", headers=HEADERS)
+    print("DELETE interface:", r.status_code, r.text)
 
-# wysłanie zapytania POST
-response = requests.post(url, headers=headers, data=payload)
+# ROUTING
 
-print("Status code:", response.status_code)
+def add_route():
+    data = {"network": "192.168.1.0/24", "gateway": "10.0.0.1"}
+    r = requests.post(BASE_URL + "/routing", json=data, headers=HEADERS)
+    print("POST route:", r.status_code, r.text)
 
-# sprawdzamy czy request się udał
-if response.status_code == 201:
-    print("Request successful!")
-else:
-    print("Request failed")
+def get_routes():
+    r = requests.get(BASE_URL + "/routing", headers=HEADERS)
+    print("GET routes:", r.status_code, r.text)
 
-# pokazujemy odpowiedź serwera
-print("Response from server:")
-print(response.text)
+
+def main():
+    create_interface()
+    get_interfaces()
+    update_interface()
+    get_interfaces()
+    add_route()
+    get_routes()
+    delete_interface()
+    get_interfaces()
+
+
+if __name__ == "__main__":
+    main()
